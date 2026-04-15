@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milestone 1 - Documentation</title><!-- Shared Styles -->
+<link rel="stylesheet" href="../styles.css">
+
+</head>
+<body><header class="container">
+    <h1>Milestone 1: Database Documentation</h1>
+    <span class="status-badge completed">Completed: April 15</span>
+</header>
+
+<main class="container">
+
+    <!-- Section 1: EERD -->
+    <section class="card">
+        <h2>Database Design & EERD</h2>
+
+        <div class="eerd-container">
+            <img src="../assets/eerd-placeholder.png" alt="EERD Diagram" class="eerd-image">
+            <p class="caption">Figure 1: Enhanced Entity-Relationship Diagram (EERD)</p>
+        </div>
+
+        <div class="download-section">
+            <a href="../assets/eerd.pdf" download>
+                <button class="download-btn">Download EERD (PDF)</button>
+            </a>
+        </div>
+    </section>
+
+    <!-- Section 2: Data Dictionary -->
+    <section class="card">
+        <h2>Data Dictionary</h2>
+
+        <div class="table-container">
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Table Name</th>
+                        <th>Attribute</th>
+                        <th>Data Type</th>
+                        <th>Constraints</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example Row -->
+                    <tr>
+                        <td>Users</td>
+                        <td>user_id</td>
+                        <td>INT</td>
+                        <td>PRIMARY KEY, AUTO_INCREMENT</td>
+                    </tr>
+                    <tr>
+                        <td>Users</td>
+                        <td>email</td>
+                        <td>VARCHAR(255)</td>
+                        <td>UNIQUE, NOT NULL</td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<!-- Shared Script -->
+<script src="../app.js"></script>
+
+</body>
+</html>
