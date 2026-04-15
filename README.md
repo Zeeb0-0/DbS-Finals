@@ -1,7 +1,7 @@
 # DbS-Finals
 
 ---
-###ROLES:
+### ROLES:
 
 KYLE - Database Lead: ERD Design, SQL Scripting, and Transaction 
 Logic (Lesson 8).
