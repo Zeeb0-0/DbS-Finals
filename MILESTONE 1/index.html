@@ -5,10 +5,116 @@
     <title>Milestone 1 - Documentation</title><!-- Shared Styles -->
 <link rel="stylesheet" href="../styles.css">
 
+<!-- Page-specific enhancements -->
+<style>
+    .status-badge {
+        display: inline-block;
+        margin-top: 1rem;
+        padding: 0.4rem 0.8rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-family: var(--font-mono);
+        background: var(--accent-dim);
+        color: var(--accent);
+        border: 1px solid var(--accent);
+    }
+
+    .card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        margin-top: 2rem;
+        box-shadow: var(--shadow-md);
+    }
+
+    .eerd-container {
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+
+    .eerd-image {
+        width: 100%;
+        max-width: 900px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border);
+        transition: transform var(--duration-med) var(--ease-out);
+    }
+
+    .eerd-image:hover {
+        transform: scale(1.02);
+    }
+
+    .caption {
+        margin-top: 0.75rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    .download-section {
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+
+    .download-btn {
+        padding: 0.6rem 1.2rem;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--accent);
+        background: transparent;
+        color: var(--accent);
+        font-family: var(--font-body);
+        cursor: pointer;
+        transition: all var(--duration-fast) ease;
+    }
+
+    .download-btn:hover {
+        background: var(--accent-dim);
+        box-shadow: var(--shadow-glow);
+    }
+
+    .table-container {
+        margin-top: 1.5rem;
+        overflow-x: auto;
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+    }
+
+    .styled-table thead {
+        background: var(--bg-elevated);
+    }
+
+    .styled-table th {
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    .styled-table tbody tr {
+        border-top: 1px solid var(--border);
+        transition: background var(--duration-fast);
+    }
+
+    .styled-table tbody tr:hover {
+        background: var(--bg-elevated);
+    }
+</style>
+
 </head>
-<body><header class="container">
+<body><!-- Navbar Placeholder (Injected via app.js) -->
+<div id="nav-placeholder"></div>
+
+<header class="container">
     <h1>Milestone 1: Database Documentation</h1>
-    <span class="status-badge completed">Completed: April 15</span>
+    <span class="status-badge">Completed: April 15</span>
 </header>
 
 <main class="container">
@@ -44,7 +150,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Example Row -->
                     <tr>
                         <td>Users</td>
                         <td>user_id</td>
@@ -57,7 +162,6 @@
                         <td>VARCHAR(255)</td>
                         <td>UNIQUE, NOT NULL</td>
                     </tr>
-                    <!-- Add more rows as needed -->
                 </tbody>
             </table>
         </div>
