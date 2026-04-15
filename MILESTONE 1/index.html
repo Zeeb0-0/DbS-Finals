@@ -7,6 +7,50 @@
 
 <!-- Page-specific enhancements -->
 <style>
+    /* Background (copied from root for consistency) */
+    .page-bg {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .grid-lines {
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(0,212,180,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,212,180,0.04) 1px, transparent 1px);
+        background-size: 64px 64px;
+        mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 100%);
+    }
+
+    .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.18;
+    }
+
+    .orb-1 {
+        width: 600px; height: 600px;
+        background: radial-gradient(circle, #00d4b4, transparent 70%);
+        top: -200px; right: -100px;
+        animation: drift 18s ease-in-out infinite alternate;
+    }
+
+    .orb-2 {
+        width: 400px; height: 400px;
+        background: radial-gradient(circle, #0066ff, transparent 70%);
+        bottom: 20%; left: -100px;
+        animation: drift 22s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes drift {
+        from { transform: translate(0, 0) scale(1); }
+        to   { transform: translate(40px, 30px) scale(1.08); }
+    }
     .status-badge {
         display: inline-block;
         margin-top: 1rem;
@@ -109,7 +153,14 @@
 </style>
 
 </head>
-<body><!-- Navbar Placeholder (Injected via app.js) -->
+<body><!-- Animated Background (matched with root) -->
+<div class="page-bg" aria-hidden="true">
+    <div class="grid-lines"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+</div>
+
+<!-- Navbar Placeholder (Injected via app.js) -->
 <div id="nav-placeholder"></div>
 
 <header class="container">
