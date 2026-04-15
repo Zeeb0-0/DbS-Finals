@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social Media Analytics — Project Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+
+  <style>
+    /* ── Page-specific styles ─────────────────────────────────── */
+
+    /* Animated grid background */
+    .page-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,180,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,180,0.04) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 100%);
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+    }
+    .orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, #00d4b4, transparent 70%);
+      top: -200px; right: -100px;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #0066ff, transparent 70%);
+      bottom: 20%; left: -100px;
+      animation: drift 22s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(40px, 30px) scale(1.08); }
+    }
+
+    /* ── Hero ─────────────────────────────────────────────────── */
+    .hero {
+      padding: 6rem 2rem 4rem;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,212,180,0.2);
+      padding: 0.3rem 0.8rem;
+      border-radius: 99px;
+      margin-bottom: 1.75rem;
+      opacity: 0;
+      animation: fade-up 0.6s var(--ease-out) 0.1s forwards;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      flex-shrink: 0;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fade-up 0.7s var(--ease-out) 0.2s forwards;
+    }
+
+    .hero-title .accent-word {
+      background: linear-gradient(135deg, #00d4b4 0%, #00a8ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-description {
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      max-width: 56ch;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fade-up 0.7s var(--ease-out) 0.35s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fade-up 0.7s var(--ease-out) 0.5s forwards;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all var(--duration-med) var(--ease-out);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0a0b0f;
+    }
+    .btn-primary:hover {
+      background: #00f0ce;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--accent-glow);
+      text-decoration: none;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      border-color: var(--border-hover);
+      color: var(--text-primary);
+      background: var(--bg-elevated);
+      transform: translateY(-2px);
+      text-decoration: none;
+    }
+
+    /* ── Tech Stack Badges ─────────────────────────────────────── */
+    .tech-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 3.5rem;
+      opacity: 0;
+      animation: fade-up 0.7s var(--ease-out) 0.65s forwards;
+    }
+
+    .tech-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.4rem 0.9rem;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+      transition: all var(--duration-fast) ease;
+    }
+
+    .tech-badge:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .tech-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── Stats Bar ────────────────────────────────────────────── */
+    .stats-bar {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      opacity: 0;
+      animation: fade-up 0.7s var(--ease-out) 0.75s forwards;
+    }
+
+    /* undo padding hack */
+    .stats-bar { padding: 0; }
+
+    .stat-cell {
+      background: var(--bg-surface);
+      padding: 1.75rem 2rem;
+      transition: background var(--duration-fast) ease;
+    }
+
+    .stat-cell:hover { background: var(--bg-elevated); }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Section Shared ─────────────────────────────────────────── */
+    .section {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .section-header {
+      margin-bottom: 3.5rem;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+    }
+
+    /* ── About / Stack cards ───────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; }
+    }
+
+    .about-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      transition: border-color var(--duration-fast) ease, transform var(--duration-med) var(--ease-out);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity var(--duration-med) ease;
+    }
+
+    .about-card:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+    .about-card:hover::before { opacity: 1; }
+
+    .card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: var(--text-primary);
+    }
+
+    .card-body {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ── Timeline ──────────────────────────────────────────────── */
+    .timeline-section {
+      border-top: 1px solid var(--border);
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 2.5rem;
+    }
+
+    /* Vertical rule */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.45rem;
+      top: 0.6rem;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      transform: translateX(-12px);
+      transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+    }
+
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Node dot */
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.15rem;
+      top: 1.2rem;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--bg-base);
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+      z-index: 1;
+    }
+
+    .timeline-item.is-final::before {
+      background: var(--accent);
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .milestone-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: start;
+      transition: border-color var(--duration-fast) ease, background var(--duration-fast) ease;
+      text-decoration: none;
+    }
+
+    .milestone-card:hover {
+      border-color: var(--accent);
+      background: var(--bg-elevated);
+      text-decoration: none;
+    }
+
+    .milestone-card:hover .milestone-arrow {
+      transform: translate(3px, -3px);
+      opacity: 1;
+    }
+
+    .milestone-number {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+
+    .milestone-name {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .milestone-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .milestone-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .milestone-date {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .milestone-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      padding: 0.25rem 0.6rem;
+      border-radius: 99px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .status-upcoming {
+      background: rgba(255,255,255,0.05);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .status-active {
+      background: rgba(0,212,180,0.1);
+      color: var(--accent);
+      border: 1px solid rgba(0,212,180,0.25);
+    }
+
+    .status-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .status-active .status-dot {
+      box-shadow: 0 0 6px currentColor;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .milestone-arrow {
+      font-size: 1rem;
+      color: var(--accent);
+      opacity: 0.5;
+      transition: transform var(--duration-med) var(--ease-out), opacity var(--duration-fast) ease;
+      align-self: flex-end;
+    }
+
+    /* ── Footer ────────────────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-brand {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .footer-brand span { color: var(--accent); }
+
+    .footer-note {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Animations ─────────────────────────────────────────────── */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Mobile ──────────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .hero { padding: 4rem 1rem 2.5rem; }
+      .section { padding: 3.5rem 1rem; }
+      .timeline { padding-left: 2rem; }
+      .milestone-card { grid-template-columns: 1fr; }
+      .milestone-meta { flex-direction: row; align-items: center; }
+      .milestone-arrow { display: none; }
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+      .hero-title { letter-spacing: -0.03em; }
+      .site-footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated Background -->
+  <div class="page-bg" aria-hidden="true">
+    <div class="grid-lines"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+
+  <!-- Navbar (injected by app.js) -->
+  <div id="nav-placeholder"></div>
+
+  <!-- ═══════════════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════════════ -->
+  <section class="hero" aria-label="Project overview">
+
+    <div class="hero-eyebrow">CS Project Hub — Spring 2025</div>
+
+    <h1 class="hero-title">
+      Social Media<br />
+      <span class="accent-word">Analytics</span><br />
+      Dashboard
+    </h1>
+
+    <p class="hero-description">
+      A full-stack data analytics platform that ingests, stores, and visualises
+      social media engagement metrics — built on <strong>MySQL</strong>,
+      <strong>PHP</strong>, and <strong>Python</strong>.
+    </p>
+
+    <div class="hero-actions">
+      <a href="FINAL SUBMISSION/index.html" class="btn btn-primary">
+        View Final Submission ↗
+      </a>
+      <a href="#timeline" class="btn btn-secondary">
+        See Timeline
+      </a>
+    </div>
+
+    <div class="tech-row" role="list" aria-label="Technology stack">
+      <div class="tech-badge" role="listitem">
+        <span class="tech-dot" style="background:#4479a1"></span> MySQL
+      </div>
+      <div class="tech-badge" role="listitem">
+        <span class="tech-dot" style="background:#8892be"></span> PHP 8
+      </div>
+      <div class="tech-badge" role="listitem">
+        <span class="tech-dot" style="background:#3572a5"></span> Python 3
+      </div>
+      <div class="tech-badge" role="listitem">
+        <span class="tech-dot" style="background:#f7df1e"></span> JavaScript
+      </div>
+      <div class="tech-badge" role="listitem">
+        <span class="tech-dot" style="background:#e34f26"></span> HTML / CSS
+      </div>
+      <div class="tech-badge" role="listitem">
+        <span class="tech-dot" style="background:#00d4b4"></span> GitHub Pages
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       STATS BAR
+  ═══════════════════════════════════════════════ -->
+  <div class="stats-bar" aria-label="Project statistics" role="list">
+    <div class="stat-cell" role="listitem">
+      <div class="stat-value">4</div>
+      <div class="stat-label">Milestones</div>
+    </div>
+    <div class="stat-cell" role="listitem">
+      <div class="stat-value">3</div>
+      <div class="stat-label">Core Technologies</div>
+    </div>
+    <div class="stat-cell" role="listitem">
+      <div class="stat-value">1</div>
+      <div class="stat-label">Full-Stack App</div>
+    </div>
+    <div class="stat-cell" role="listitem">
+      <div class="stat-value">∞</div>
+      <div class="stat-label">Data Insights</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       ABOUT / STACK
+  ═══════════════════════════════════════════════ -->
+  <section class="section" aria-labelledby="about-heading">
+    <div class="section-header">
+      <div class="section-label">// About the Project</div>
+      <h2 class="section-title" id="about-heading">What We're Building</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-card">
+        <span class="card-icon">🗄️</span>
+        <div class="card-title">Relational Database Layer</div>
+        <p class="card-body">
+          A normalised MySQL schema stores posts, users, reactions, and
+          time-series engagement data. Queries are optimised with indexing
+          and stored procedures to handle large datasets efficiently.
+        </p>
+      </div>
+
+      <div class="about-card">
+        <span class="card-icon">⚙️</span>
+        <div class="card-title">PHP Backend API</div>
+        <p class="card-body">
+          RESTful endpoints built in PHP expose the database to the frontend,
+          handling authentication, CRUD operations, and data serialisation
+          to JSON for consumption by the dashboard.
+        </p>
+      </div>
+
+      <div class="about-card">
+        <span class="card-icon">📊</span>
+        <div class="card-title">Python Data Pipeline</div>
+        <p class="card-body">
+          Python scripts using Pandas and Matplotlib handle data ingestion,
+          cleaning, and statistical analysis — generating trend reports and
+          exportable visualisations for the final dashboard.
+        </p>
+      </div>
+
+      <div class="about-card">
+        <span class="card-icon">🖥️</span>
+        <div class="card-title">Interactive Frontend</div>
+        <p class="card-body">
+          A responsive HTML/CSS/JS interface presents analytics through
+          interactive charts, filterable tables, and summary cards — all
+          served statically via GitHub Pages.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       TIMELINE
+  ═══════════════════════════════════════════════ -->
+  <section class="section timeline-section" id="timeline" aria-labelledby="timeline-heading">
+    <div class="section-header">
+      <div class="section-label">// Project Timeline</div>
+      <h2 class="section-title" id="timeline-heading">Milestone Roadmap</h2>
+    </div>
+
+    <div class="timeline" role="list">
+
+      <!-- Milestone 1 -->
+      <div class="timeline-item" role="listitem">
+        <a href="MILESTONE 1/index.html" class="milestone-card">
+          <div>
+            <div class="milestone-number">Milestone 01</div>
+            <div class="milestone-name">Database Design & Schema</div>
+            <p class="milestone-desc">
+              Entity-relationship diagrams, MySQL schema creation, normalisation
+              to 3NF, and initial seed data. Establishes the data foundation
+              for the entire project.
+            </p>
+          </div>
+          <div class="milestone-meta">
+            <div class="milestone-date">Due: April 15, 2026</div>
+            <div class="milestone-status status-upcoming">
+              <span class="status-dot"></span> Complete
+            </div>
+            <div class="milestone-arrow">↗</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Milestone 2 -->
+      <div class="timeline-item" role="listitem">
+        <a href="MILESTONE 2/index.html" class="milestone-card">
+          <div>
+            <div class="milestone-number">Milestone 02</div>
+            <div class="milestone-name">PHP Backend & REST API</div>
+            <p class="milestone-desc">
+              Server-side logic in PHP: authentication routes, CRUD endpoints
+              for posts and users, JSON responses, and error handling.
+              Integration tested against the live MySQL database.
+            </p>
+          </div>
+          <div class="milestone-meta">
+            <div class="milestone-date">Due: April 22, 2026</div>
+            <div class="milestone-status status-active">
+              <span class="status-dot"></span> In Progress
+            </div>
+            <div class="milestone-arrow">↗</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Milestone 3 -->
+      <div class="timeline-item" role="listitem">
+        <a href="MILESTONE 3/index.html" class="milestone-card">
+          <div>
+            <div class="milestone-number">Milestone 03</div>
+            <div class="milestone-name">Python Analytics Pipeline</div>
+            <p class="milestone-desc">
+              Data ingestion scripts, Pandas-driven cleaning and aggregation,
+              Matplotlib visualisations, and automated report generation
+              feeding directly into the dashboard.
+            </p>
+          </div>
+          <div class="milestone-meta">
+            <div class="milestone-date">Due: April 22, 2026</div>
+            <div class="milestone-status status-upcoming">
+              <span class="status-dot"></span> Upcoming
+            </div>
+            <div class="milestone-arrow">↗</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Final Submission -->
+      <div class="timeline-item is-final" role="listitem">
+        <a href="FINAL SUBMISSION/index.html" class="milestone-card">
+          <div>
+            <div class="milestone-number">★ Final Submission</div>
+            <div class="milestone-name">Integrated Analytics Dashboard</div>
+            <p class="milestone-desc">
+              Full integration of all components: live database queries,
+              API-driven charts, Python-generated reports, and a polished
+              responsive UI — deployed to GitHub Pages.
+            </p>
+          </div>
+          <div class="milestone-meta">
+            <div class="milestone-date">Due: Apr 25 & 29, 2026</div>
+            <div class="milestone-status status-upcoming">
+              <span class="status-dot"></span> Upcoming
+            </div>
+            <div class="milestone-arrow">↗</div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════ -->
+  <footer>
+    <div class="site-footer">
+      <div class="footer-brand">
+        <span>◈</span> Social Media Analytics
+      </div>
+      <div class="footer-note">Group 19 · 2026</div>
+    </div>
+  </footer>
+
+  <script src="./app.js"></script>
+
+  <script>
+    /* ── Scroll-triggered timeline reveals ───────────────────── */
+    const timelineItems = document.querySelectorAll('.timeline-item');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          // Stagger each item slightly
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    timelineItems.forEach(item => observer.observe(item));
+  </script>
+
+</body>
+</html>
