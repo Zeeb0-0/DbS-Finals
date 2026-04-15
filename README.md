@@ -7,7 +7,7 @@
 
 ### KYLE
 Database Lead: ERD Design, SQL Scripting, and Transaction 
-Logic (Lesson 8).
+Logic.
 
 ### RAI
 Backend/Python: Developing the Python, for example RFID 
