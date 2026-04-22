@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Milestone 2 - PHP Backend & REST API</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <style>
+    .status-badge {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-top: 2rem;
+      box-shadow: var(--shadow-md);
+    }
+    pre {
+      background: var(--bg-elevated);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      font-size: 0.85rem;
+    }
+    .caption {
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .styled-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .styled-table th,
+    .styled-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+    .styled-table thead {
+      background: var(--bg-elevated);
+    }
+    .styled-table tbody tr {
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <!-- Background -->
+  <div class="page-bg" aria-hidden="true">
+    <div class="grid-lines"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+
+  <!-- Navbar Placeholder -->
+  <div id="nav-placeholder"></div>
+
+  <header class="container">
+    <h1>Milestone 2: PHP Backend & REST API</h1>
+    <span class="status-badge">In Progress: April 22</span>
+  </header>
+
+  <main class="container">
+    <!-- Section 1: Overview -->
+    <section class="card">
+      <h2>Overview</h2>
+      <p>
+        This milestone demonstrates the PHP backend layer of the Social Media Analytics Dashboard.
+        It includes authentication routes, CRUD endpoints for posts and users, and JSON responses
+        tested against the live MySQL database.
+      </p>
+    </section>
+
+    <!-- Section 2: Database Connection -->
+    <section class="card">
+      <h2>Database Connection</h2>
+      <pre><code>
+<?php
+$conn = new mysqli("localhost", "root", "", "social_media_db");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+?>
+      </code></pre>
+      <p class="caption">Figure 1: PHP connection to MySQL database.</p>
+    </section>
+
+    <!-- Section 3: CRUD Endpoints -->
+    <section class="card">
+      <h2>CRUD Endpoints</h2>
+      <div class="table-container">
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Endpoint</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Create</td>
+              <td>/api/create_post.php</td>
+              <td>Insert new post into database.</td>
+            </tr>
+            <tr>
+              <td>Read</td>
+              <td>/api/get_posts.php</td>
+              <td>Retrieve posts as JSON.</td>
+            </tr>
+            <tr>
+              <td>Update</td>
+              <td>/api/update_post.php</td>
+              <td>Modify existing post content.</td>
+            </tr>
+            <tr>
+              <td>Delete</td>
+              <td>/api/delete_post.php</td>
+              <td>Remove post by ID.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 4: Demo Output -->
+    <section class="card">
+      <h2>Demo Output</h2>
+      <pre><code>
+{
+  "post_id": 1,
+  "user_id": 2,
+  "content": "First test post!",
+  "timestamp": "2026-04-22 14:35:00"
+}
+      </code></pre>
+      <p class="caption">Figure 2: Sample JSON response from get_posts.php</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="site-footer">
+      <div class="footer-brand"><span>◈</span> Data Gathering Club</div>
+      <div class="footer-note">Milestone 2 Documentation</div>
+    </div>
+  </footer>
+
+  <!-- Shared Script -->
+  <script src="../app.js"></script>
+</body>
+</html>
