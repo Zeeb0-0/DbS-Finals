@@ -25,6 +25,11 @@ if (!$script_path || !file_exists($script_path)) {
     jsonResponse(false, null, "Script file not found: $script_key");
 }
 
+$allowed_base = realpath(__DIR__ . '/../python');
+if (!$script_path || strpos($script_path, $allowed_base) !== 0) {
+    jsonResponse(false, null, 'Script path rejected');
+}
+
 // Build argument list safely
 $args = [];
 if ($post_id > 0) $args[] = '--post_id ' . escapeshellarg($post_id);

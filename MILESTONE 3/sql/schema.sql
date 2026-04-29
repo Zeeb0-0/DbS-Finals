@@ -9,6 +9,10 @@ CREATE DATABASE IF NOT EXISTS social_media_analytics
 
 USE social_media_analytics;
 
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS post_hashtags, aggregation_reports, sentiment_results, engagement_metrics, hashtags, posts, users, platforms;
+SET FOREIGN_KEY_CHECKS = 1;
+
 -- ============================================================
 -- TABLE: platforms
 -- Stores social media platform metadata
@@ -266,7 +270,7 @@ CREATE OR REPLACE VIEW vw_post_summary AS
     FROM posts p
     JOIN users u             ON p.user_id     = u.user_id
     JOIN platforms pl        ON u.platform_id = pl.platform_id
-    LEFT JOIN engagement_metrics em ON p.post_id = em.metric_id
+    LEFT JOIN engagement_metrics em ON p.post_id = em.post_id
     LEFT JOIN sentiment_results  sr ON p.post_id = sr.post_id;
 
 CREATE OR REPLACE VIEW vw_user_stats AS

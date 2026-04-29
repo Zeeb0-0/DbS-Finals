@@ -15,7 +15,7 @@ const State = {
 };
 
 // ── API helpers ────────────────────────────────────────────
-const API_BASE = '../php';
+const API_BASE = 'php';
 
 async function apiFetch(endpoint, options = {}) {
   try {

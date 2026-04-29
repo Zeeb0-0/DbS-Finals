@@ -14,7 +14,7 @@ import sys
 import json
 import argparse
 import os
-from datetime import date
+from datetime import date, datetime
 
 try:
     import mysql.connector
@@ -28,7 +28,7 @@ DB_CONFIG = {
     "port":     int(os.getenv("DB_PORT", 3306)),
     "database": os.getenv("DB_NAME", "social_media_analytics"),
     "user":     os.getenv("DB_USER", "root"),
-    "password": os.getenv("DB_PASS", ""),
+    "password": os.getenv("DB_PASS", "Password123456"),
     "charset":  "utf8mb4",
 }
 
@@ -44,7 +44,7 @@ def aggregate(user_id: int | None = None) -> list[dict]:
     cursor.execute(f"""
         SELECT
             p.user_id,
-            DATE_FORMAT(p.post_date, '%%Y-%%m-01') AS report_period,
+            DATE(DATE_SUB(p.post_date, INTERVAL DAYOFMONTH(p.post_date)-1 DAY)) AS report_period,
             COUNT(p.post_id)                        AS total_posts,
             COALESCE(SUM(em.likes),    0)           AS total_likes,
             COALESCE(SUM(em.shares),   0)           AS total_shares,
@@ -83,7 +83,7 @@ def aggregate(user_id: int | None = None) -> list[dict]:
             SELECT p.post_id
             FROM posts p
             JOIN engagement_metrics em ON p.post_id = em.post_id
-            WHERE p.user_id = %s AND DATE_FORMAT(p.post_date, '%%Y-%%m-01') = %s
+            WHERE p.user_id = %s AND DATE(DATE_SUB(p.post_date, INTERVAL DAYOFMONTH(p.post_date)-1 DAY)) = %s
             ORDER BY (em.likes + em.shares + em.comments) DESC
             LIMIT 1
         """, (row["user_id"], row["report_period"]))
@@ -91,7 +91,8 @@ def aggregate(user_id: int | None = None) -> list[dict]:
         top_post_id = top["post_id"] if top else None
 
         cursor.execute(upsert_sql, (
-            row["user_id"], row["report_period"],
+            row["user_id"],
+            datetime.strptime(str(row["report_period"]), "%Y-%m-%d").date(),  # ← cast to date
             row["total_posts"], row["total_likes"], row["total_shares"],
             row["total_comments"], row["total_views"],
             round(float(row["avg_engagement"]), 4),

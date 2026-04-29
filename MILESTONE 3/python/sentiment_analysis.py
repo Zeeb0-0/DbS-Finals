@@ -36,7 +36,7 @@ DB_CONFIG = {
     "port":     int(os.getenv("DB_PORT", 3306)),
     "database": os.getenv("DB_NAME", "social_media_analytics"),
     "user":     os.getenv("DB_USER", "root"),
-    "password": os.getenv("DB_PASS", ""),
+    "password": os.getenv("DB_PASS", "Password123456"),
     "charset":  "utf8mb4",
 }
 
