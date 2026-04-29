@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SMA Dashboard — Social Media Analytics</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="app-wrapper">
+
+  <!-- ══ TOPBAR ═══════════════════════════════════════════════ -->
+  <header class="topbar">
+    <div class="topbar-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+    </div>
+    <span class="topbar-title">SMA DASHBOARD</span>
+    <span class="topbar-spacer"></span>
+    <span class="topbar-badge">● LIVE</span>
+  </header>
+
+  <!-- ══ SIDEBAR ══════════════════════════════════════════════ -->
+  <nav class="sidebar">
+    <span class="sidebar-section-label">Analytics</span>
+    <div class="nav-item active" data-section="overview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Overview
+    </div>
+    <div class="nav-item" data-section="analytics">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Charts &amp; Trends
+    </div>
+
+    <span class="sidebar-section-label">Data Management</span>
+    <div class="nav-item" data-section="posts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Posts
+    </div>
+    <div class="nav-item" data-section="users">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Accounts
+    </div>
+
+    <span class="sidebar-section-label">Backend</span>
+    <div class="nav-item" data-section="scripts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+      Python Scripts
+    </div>
+  </nav>
+
+  <!-- ══ MAIN CONTENT ════════════════════════════════════════ -->
+  <main class="main-content">
+
+    <!-- ── OVERVIEW ─────────────────────────────────────────── -->
+    <section id="section-overview" class="page-section active">
+      <div class="page-header">
+        <h1>Overview</h1>
+        <p>Aggregated engagement metrics across all tracked accounts</p>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card blue">
+          <div class="stat-label">Total Posts</div>
+          <div class="stat-value" id="kpi-posts">—</div>
+          <div class="stat-sub">tracked content</div>
+        </div>
+        <div class="stat-card pink">
+          <div class="stat-label">Total Likes</div>
+          <div class="stat-value" id="kpi-likes">—</div>
+          <div class="stat-sub">across all posts</div>
+        </div>
+        <div class="stat-card cyan">
+          <div class="stat-label">Total Views</div>
+          <div class="stat-value" id="kpi-views">—</div>
+          <div class="stat-sub">impressions</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-label">Avg Engagement</div>
+          <div class="stat-value" id="kpi-engagement">—</div>
+          <div class="stat-sub">per post</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Positive Rate</div>
+          <div class="stat-value" id="kpi-sentiment">—</div>
+          <div class="stat-sub">sentiment score</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">TOP POSTS BY ENGAGEMENT</span>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr><th>Platform</th><th>Preview</th><th>Likes</th><th>Views</th><th>Sentiment</th></tr>
+            </thead>
+            <tbody id="top-posts-tbody">
+              <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">LIKES BY ACCOUNT</span>
+          </div>
+          <div class="bar-chart" id="user-bar-chart"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CHARTS & TRENDS ──────────────────────────────────── -->
+    <section id="section-analytics" class="page-section">
+      <div class="page-header">
+        <h1>Charts &amp; Trends</h1>
+        <p>Visualized engagement breakdown by platform, sentiment, and hashtag</p>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">LIKES BY PLATFORM</span></div>
+          <div class="bar-chart" id="platform-chart"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">SENTIMENT DISTRIBUTION</span></div>
+          <div class="bar-chart" id="sentiment-bars"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">TOP HASHTAGS BY USAGE</span></div>
+        <div class="bar-chart" id="hashtag-chart"></div>
+      </div>
+    </section>
+
+    <!-- ── POSTS ────────────────────────────────────────────── -->
+    <section id="section-posts" class="page-section">
+      <div class="page-header">
+        <h1>Posts</h1>
+        <p>Full CRUD management for all tracked social posts</p>
+      </div>
+
+      <!-- Filters -->
+      <div class="panel mb-4">
+        <div class="flex items-center gap-3" style="flex-wrap:wrap">
+          <select id="filter-platform" class="form-control" style="width:180px" onchange="loadPosts()">
+            <option value="">All Platforms</option>
+            <option>Twitter</option><option>Instagram</option>
+            <option>Facebook</option><option>LinkedIn</option><option>TikTok</option>
+          </select>
+          <select id="filter-sentiment" class="form-control" style="width:160px" onchange="loadPosts()">
+            <option value="">All Sentiments</option>
+            <option>positive</option><option>neutral</option><option>negative</option>
+          </select>
+          <select id="sort-field" class="form-control" style="width:160px" onchange="loadPosts()">
+            <option value="post_date">Date</option>
+            <option value="likes">Likes</option>
+            <option value="views">Views</option>
+            <option value="comments">Comments</option>
+          </select>
+          <div class="topbar-spacer"></div>
+          <button class="btn btn-primary" onclick="openCreateModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Post
+          </button>
+        </div>
+      </div>
+
+      <div class="panel" style="padding:0;overflow:hidden">
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>#ID</th><th>Platform</th><th>Content</th>
+                <th>Likes</th><th>Views</th><th>Engagement</th>
+                <th>Sentiment</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="posts-tbody">
+              <tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:32px">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── USERS ─────────────────────────────────────────────── -->
+    <section id="section-users" class="page-section">
+      <div class="page-header">
+        <h1>Accounts</h1>
+        <p>Manage tracked social media accounts</p>
+      </div>
+
+      <div class="flex mb-4" style="justify-content:flex-end">
+        <button class="btn btn-primary" onclick="openCreateUserModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Account
+        </button>
+      </div>
+
+      <div class="panel" style="padding:0;overflow:hidden">
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr><th>#ID</th><th>Platform</th><th>Username</th><th>Display Name</th><th>Followers</th><th>Bio</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="users-tbody">
+              <tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:32px">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PYTHON SCRIPTS ────────────────────────────────────── -->
+    <section id="section-scripts" class="page-section">
+      <div class="page-header">
+        <h1>Python Scripts</h1>
+        <p>Execute backend analysis scripts and inspect their JSON output</p>
+      </div>
+
+      <div class="script-grid">
+
+        <!-- Sentiment Analysis -->
+        <div class="script-card">
+          <div class="script-card-title">🧠 Sentiment Analysis</div>
+          <div class="script-card-desc">
+            Runs VADER (or rule-based fallback) on all post text, classifies each post as
+            <em>positive</em>, <em>neutral</em>, or <em>negative</em>, and writes scores to
+            <code>sentiment_results</code>.
+          </div>
+          <button id="btn-sentiment" class="btn btn-primary btn-sm" onclick="runScript('sentiment','out-sentiment','btn-sentiment')">▶ Run</button>
+          <pre id="out-sentiment" class="script-output"></pre>
+        </div>
+
+        <!-- Data Aggregation -->
+        <div class="script-card">
+          <div class="script-card-title">📊 Data Aggregation</div>
+          <div class="script-card-desc">
+            Computes monthly engagement totals per user — likes, shares, comments, views —
+            and writes summaries to <code>aggregation_reports</code>.
+          </div>
+          <button id="btn-aggregate" class="btn btn-primary btn-sm" onclick="runScript('aggregate','out-aggregate','btn-aggregate')">▶ Run</button>
+          <pre id="out-aggregate" class="script-output"></pre>
+        </div>
+
+        <!-- Trend Analysis -->
+        <div class="script-card">
+          <div class="script-card-title">📈 Trend Analysis</div>
+          <div class="script-card-desc">
+            Identifies trending hashtags, calculates engagement velocity (engagement/day),
+            and compares platform performance. Read-only — no DB writes.
+          </div>
+          <button id="btn-trend" class="btn btn-primary btn-sm" onclick="runScript('trend','out-trend','btn-trend')">▶ Run</button>
+          <pre id="out-trend" class="script-output"></pre>
+        </div>
+
+      </div>
+
+      <div class="panel mt-4">
+        <div class="panel-header"><span class="panel-title">HOW IT WORKS</span></div>
+        <p class="text-sm text-muted" style="line-height:1.8">
+          Clicking <strong>Run</strong> sends a POST request to <code>php/run_script.php</code>,
+          which whitelists the script name, constructs a safe <code>shell_exec()</code> call
+          to <code>python3</code>, and returns the captured JSON output.
+          Scripts read from and write back to MySQL using <code>mysql-connector-python</code>.
+          When the DB is unavailable, each script automatically falls back to embedded demo data.
+        </p>
+      </div>
+    </section>
+
+  </main><!-- /main-content -->
+</div><!-- /app-wrapper -->
+
+<!-- ══ POST MODAL ══════════════════════════════════════════════ -->
+<div id="post-modal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">New Post</span>
+      <button class="btn btn-secondary btn-icon" onclick="closePostModal()">✕</button>
+    </div>
+
+    <input type="hidden" id="form-post-id" />
+
+    <div class="form-group mb-4">
+      <label>Account</label>
+      <select id="form-user" class="form-control"></select>
+    </div>
+
+    <div class="form-group mb-4">
+      <label>Post Content</label>
+      <textarea id="form-content" class="form-control" placeholder="Enter post text…"></textarea>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Post Date</label>
+        <input type="datetime-local" id="form-date" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Post URL</label>
+        <input type="url" id="form-url" class="form-control" placeholder="https://…" />
+      </div>
+    </div>
+
+    <div class="form-grid mt-4">
+      <div class="form-group"><label>Likes</label>    <input type="number" id="form-likes"    class="form-control" min="0" /></div>
+      <div class="form-group"><label>Shares</label>   <input type="number" id="form-shares"   class="form-control" min="0" /></div>
+      <div class="form-group"><label>Comments</label> <input type="number" id="form-comments" class="form-control" min="0" /></div>
+      <div class="form-group"><label>Views</label>    <input type="number" id="form-views"    class="form-control" min="0" /></div>
+      <div class="form-group"><label>Clicks</label>   <input type="number" id="form-clicks"   class="form-control" min="0" /></div>
+    </div>
+
+    <div class="flex gap-3 mt-4" style="justify-content:flex-end">
+      <button class="btn btn-secondary" onclick="closePostModal()">Cancel</button>
+      <button class="btn btn-primary"   onclick="submitPostForm()">Save Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ USER MODAL ══════════════════════════════════════════════ -->
+<div id="user-modal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="user-modal-title">New Account</span>
+      <button class="btn btn-secondary btn-icon" onclick="closeUserModal()">✕</button>
+    </div>
+
+    <input type="hidden" id="user-form-id" />
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="user-form-username" class="form-control" placeholder="@handle" />
+      </div>
+      <div class="form-group">
+        <label>Display Name</label>
+        <input type="text" id="user-form-display" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Platform</label>
+        <select id="user-form-platform" class="form-control"></select>
+      </div>
+      <div class="form-group">
+        <label>Followers</label>
+        <input type="number" id="user-form-followers" class="form-control" min="0" />
+      </div>
+      <div class="form-group">
+        <label>Following</label>
+        <input type="number" id="user-form-following" class="form-control" min="0" />
+      </div>
+    </div>
+
+    <div class="form-group mt-4">
+      <label>Bio</label>
+      <textarea id="user-form-bio" class="form-control" style="min-height:70px" placeholder="Short bio…"></textarea>
+    </div>
+
+    <div class="flex gap-3 mt-4" style="justify-content:flex-end">
+      <button class="btn btn-secondary" onclick="closeUserModal()">Cancel</button>
+      <button class="btn btn-primary"   onclick="submitUserForm()">Save Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST ═══════════════════════════════════════════════════ -->
+<div id="toast"></div>
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>
